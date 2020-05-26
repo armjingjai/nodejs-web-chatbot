@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+h1 {
+    color: gray;
+}
+body {
+    margin: 0 auto;
+    padding: 0 20px;
+} 
+div.main {
+  overflow: auto;
+}
+.chatbubble {
+    border: 2px solid #dedede;
+    background-color: #f1f1f1;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0;
+}
+.darker {
+    border-color: #ccc;
+    background-color: #ddd;
+}
+</style>
+</head>
+
+<body>
+    <h1>Chatbot</h1>
+
+    <div id="main" class="main" style="border-style: solid; width:400px; height:400px"></div>
+
+    <form style="border-style: solid; width:400px;">
+        <input placeholder="type something" style="width:75%;">
+        <button id="send">send</button>
+        <button id="talk">talk</button>
+    </form>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+    <script src="socket.io/socket.io.js"></script>
+    <script src="/js/app_script.js"></script>
+</body>
+
+</html>
