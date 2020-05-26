@@ -1,5 +1,5 @@
 var apiai = require("apiai");
-var appAi = apiai("5435097a2625406cb27b78b322f1088e");//use a api token from the official site
+var appAi = apiai("access token");//use a api token from the official site
 
 const chat_dialog = (message, callback) => {
 
