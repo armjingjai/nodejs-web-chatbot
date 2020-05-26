@@ -72,7 +72,7 @@ const server = app.listen(3000, () => {
 
 /////////////
 // var apiai = require('apiai');
-// var APIAI_TOKEN =apiai("5435097a2625406cb27b78b322f1088e"); //use a api token from the official site
+// var APIAI_TOKEN =apiai("you access token key"); //use a api token from the official site
 // const APIAI_SESSION_ID = "none"; //use a session id
 
 // const io = require('socket.io')(server);
