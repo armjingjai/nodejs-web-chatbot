@@ -1,7 +1,7 @@
 var fs = require("fs")
 var apiai = require("apiai");
 
-var appAi = apiai("5435097a2625406cb27b78b322f1088e", {
+var appAi = apiai("your access token", {
     language: 'en'
 });
 
