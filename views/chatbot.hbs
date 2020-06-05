@@ -13,6 +13,7 @@ div.main {
   overflow: auto;
 }
 .chatbubble {
+    text-align: right;
     border: 2px solid #dedede;
     background-color: #f1f1f1;
     border-radius: 5px;
@@ -20,6 +21,7 @@ div.main {
     margin: 10px 0;
 }
 .darker {
+    text-align: left;
     border-color: #ccc;
     background-color: #ddd;
 }
@@ -29,7 +31,7 @@ div.main {
 <body>
     <h1>Chatbot</h1>
 
-    <div id="main" class="main" style="border-style: solid; width:400px; height:400px"></div>
+    <div onscroll="" id="main" class="main" style="border-style: solid; width:400px; height:400px"></div>
 
     <form style="border-style: solid; width:400px;">
         <input placeholder="type something" style="width:75%;">
@@ -37,8 +39,6 @@ div.main {
         <button id="talk">talk</button>
     </form>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
-    <script src="socket.io/socket.io.js"></script>
     <script src="/js/app_script.js"></script>
 </body>
 

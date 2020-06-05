@@ -1,57 +1,40 @@
-// const socket = io();
-const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-const recognition = new SpeechRecognition();
-recognition.lang = 'th-TH';
-recognition.interimResults = false;
-recognition.maxAlternatives = 1;
-
-// const outputYou = document.querySelector('.output-you');
-// const outputBot = document.querySelector('.output-bot');
-
+const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition
+const recognition = new SpeechRecognition()
+recognition.lang = 'th-TH'
+recognition.interimResults = false
+recognition.maxAlternatives = 1
 
 const chat = document.querySelector('form')
 const text = document.querySelector('input')
 const send = document.querySelector('#send')
 const talk = document.querySelector('#talk')
 
+// function สำหรับการทำงานหลังจาก user ส่ง text
 send.addEventListener('click', (e) => {
     e.preventDefault()
     console.log(text.value)
 
-    add_chat_to_database('user', text.value)//เพิ่มลง database
-
-    var div = document.createElement("div");
-    div.className = "chatbubble"
-    div.innerHTML = text.value;
-    document.getElementById("main").appendChild(div);
-    document.getElementById("main").scrollTop = document.getElementById("main").scrollHeight
+    addChatToDB('user', text.value)//เพิ่มลง database
+    appendTextFromChat(text.value, "user")//เพิ่ม text ลงหน้าต่าง chat
 
     fetch('http://localhost:3000/chat?message=' + text.value).then((response) => {
         response.json().then((data) => {
             console.log(data)
-
-            add_chat_to_database('bot', data.chat)//เพิ่มลง database
-
-            var div = document.createElement("div");
-            div.className = "chatbubble darker"
-            div.innerHTML = data.chat
-            document.getElementById("main").appendChild(div);
-            document.getElementById("main").scrollTop = document.getElementById("main").scrollHeight
+            addChatToDB('bot', data.chat)//เพิ่มลง database
+            appendTextFromChat(data.chat, "bot")//เพิ่ม text ลงหน้าต่าง chat
         })
     })
-
     text.value = ""
 })
 
+// function สำหรับการทำงานหลังจาก user กดบันทึกเสียง
 talk.addEventListener('click', (e) => {
     e.preventDefault()
-
-    recognition.start();
-    
+    recognition.start()
 })
 
 recognition.addEventListener('speechstart', () => {
-    console.log('Speech has been detected.');
+    console.log('Speech has been detected.')
 });
 
 recognition.addEventListener('result', (e) => {
@@ -59,29 +42,18 @@ recognition.addEventListener('result', (e) => {
     let last = e.results.length - 1;
     let text = e.results[last][0].transcript;
     console.log(text)
-    add_chat_to_database('user', text)//เพิ่มลง database
-
-    var div = document.createElement("div");
-    div.className = "chatbubble"
-    div.innerHTML = text;
-    document.getElementById("main").appendChild(div);
-    document.getElementById("main").scrollTop = document.getElementById("main").scrollHeight
+    addChatToDB('user', text)//เพิ่มลง database
+    appendTextFromChat(text, "user")//เพิ่ม text ลงหน้าต่าง chat
   
-    // outputYou.textContent = text;
     console.log('Confidence: ' + e.results[0][0].confidence);
 
     fetch('http://localhost:3000/chat?message=' + text).then((response) => {
         response.json().then((data) => {
             console.log(data)
-            add_chat_to_database('bot', data.chat)//เพิ่มลง database
-            var div = document.createElement("div");
-            div.className = "chatbubble darker"
-            div.innerHTML = data.chat
-            document.getElementById("main").appendChild(div);
-            document.getElementById("main").scrollTop = document.getElementById("main").scrollHeight
+            addChatToDB('bot', data.chat)//เพิ่มลง database
+            appendTextFromChat(data.chat, "bot")//เพิ่ม text ลงหน้าต่าง chat
         })
     })
-//   socket.emit('chat message', text);
 });
 
 recognition.addEventListener('speechend', () => {
@@ -89,7 +61,6 @@ recognition.addEventListener('speechend', () => {
 });
 
 recognition.addEventListener('error', (e) => {
-    // outputBot.textContent = 'Error: ' + e.error;
     console.log('Error: ' + e.error)
 });
 
@@ -101,35 +72,16 @@ function synthVoice(text) {
     synth.speak(utterance);
 }
 
-// socket.on('bot reply', function(replyText) {
-//     // synthVoice(replyText);
-  
-//     if(replyText == '') replyText = '(No answer...)';
-//     console.log(replyText)
-
-//     add_chat_to_database('bot', replyText)
-
-//     var div = document.createElement("div");
-//     div.className = "chatbubble darker"
-//     div.innerHTML = replyText;
-//     // div.style.margin = "5px"
-//     // div.style.border = "groove"
-//     // div.style.backgroundColor = "green"
-//     document.getElementById("main").appendChild(div);
-//     document.getElementById("main").scrollTop = document.getElementById("main").scrollHeight
-//     // outputBot.textContent = replyText;
-// });
-
-function fetch_chat_history(){
+function fetchChatHistory(){
     fetch('http://localhost:3000/chat_history?action=getAll').then((response) => {
         response.json().then((data) => {
             console.log(data.chat)
-            data.chat.forEach(appendText)
+            data.chat.forEach(appendTextFromDB)
         })
     })
 }
 
-function add_chat_to_database(user, message){
+function addChatToDB(user, message){
     fetch('http://localhost:3000/chat_history?action=add&user='+user+'&message='+message).then((response) => {
         response.json().then((data) => {
             console.log(data.chat)
@@ -137,7 +89,7 @@ function add_chat_to_database(user, message){
     })
 }
 
-function appendText(item, index) {
+function appendTextFromDB(item, index) {
     var div = document.createElement("div");
     if(item.user == "user"){
         div.className = "chatbubble"
@@ -149,4 +101,17 @@ function appendText(item, index) {
     document.getElementById("main").scrollTop = document.getElementById("main").scrollHeight
 }
 
-fetch_chat_history()
+function appendTextFromChat(text, user) {
+    var div = document.createElement("div")
+    if(user == "user"){
+        div.className = "chatbubble"
+    }else{
+        div.className = "chatbubble darker"
+    }
+    div.innerHTML = text
+    document.getElementById("main").appendChild(div);
+    document.getElementById("main").scrollTop = document.getElementById("main").scrollHeight
+}
+
+fetchChatHistory()
+
