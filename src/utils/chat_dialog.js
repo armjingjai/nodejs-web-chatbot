@@ -1,12 +1,7 @@
-<<<<<<< HEAD
 var apiai = require("apiai")
 var appAi = apiai("15134f0f2c0f47b2bf75ca0f87bc18bc") //use a api token from the official site
 var APIAI_SESSION_ID = "none" //use a session id 
 // session id สำหรับส่ง text ไป query ยัง session นั้นๆ เป็น optional
-=======
-var apiai = require("apiai");
-var appAi = apiai("access token");//use a api token from the official site
->>>>>>> 3c917597098d44868c469c409bd9f686530ba306
 
 const chat_dialog = (message, callback) => {
 
