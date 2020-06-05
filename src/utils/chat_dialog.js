@@ -1,5 +1,5 @@
 var apiai = require("apiai")
-var appAi = apiai("15134f0f2c0f47b2bf75ca0f87bc18bc") //use a api token from the official site
+var appAi = apiai("Your client accesss token") //use a api token from the official site
 var APIAI_SESSION_ID = "none" //use a session id 
 // session id สำหรับส่ง text ไป query ยัง session นั้นๆ เป็น optional
 
